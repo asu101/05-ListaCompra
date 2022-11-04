@@ -4,10 +4,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.example.a05_listacompra.adapters.ProductosAdapter;
 import com.example.a05_listacompra.modelos.Producto;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -21,12 +25,19 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Serializable {
 
     private ActivityMainBinding binding;
     private ArrayList<Producto> productos;
+
+    // Recycler
+    // - Adapter
+    // - Layour
+    private ProductosAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
         productos = new ArrayList<>();
+
+        adapter = new ProductosAdapter(productos, R.layout.producto_view_holder, this);
+        layoutManager = new GridLayoutManager(this, 1);
+        binding.contentMain.Contenedor.setAdapter(adapter);
+        binding.contentMain.Contenedor.setLayoutManager(layoutManager);
 
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
@@ -98,11 +114,12 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (txtNombre.getText().toString().isEmpty() || txtCantidad.getText().toString().isEmpty() || txtPrecio.getText().toString().isEmpty()) {
+                if (!txtNombre.getText().toString().isEmpty() && !txtCantidad.getText().toString().isEmpty() && !txtPrecio.getText().toString().isEmpty()) {
                     Producto producto = new Producto(txtNombre.getText().toString(),
                             Integer.parseInt(txtCantidad.getText().toString()),
                             Float.parseFloat(txtPrecio.getText().toString()));
-                    productos.add(producto);
+                    productos.add(0,producto);
+                    adapter.notifyItemInserted(0);
                 } else {
                     Snackbar.make(binding.getRoot(), "No puede haber campos vacios", Snackbar.LENGTH_LONG).show();
 
@@ -117,4 +134,17 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("PRODUCTOS", productos);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ArrayList<Producto> productos = (ArrayList<Producto>) savedInstanceState.getSerializable("PRODUCTOS");
+        this.productos.addAll(productos);
+        adapter.notifyItemRangeInserted(0, productos.size());
+    }
 }

@@ -1,6 +1,9 @@
 package com.example.a05_listacompra.adapters;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -29,18 +32,47 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
     @NonNull
     @Override
     public ProductoVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
-        //View view = LayoutInflater.from(context).inflate(resource, parent, false);
-        //return new ProductoVH(view);
+        View productoView = LayoutInflater.from(context).inflate(resource, parent, false);
+        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        productoView.setLayoutParams(layoutParams);
+        return new ProductoVH(productoView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductoVH holder, int position) {
-        //Producto producto = objects.get(position);
-        //holder.txtNombre.setText(producto.getNombre());
-        //holder.txtCantidad.setText(String.valueOf(producto.getCantidad()));
-        //holder.txtPrecio.setText(String.valueOf(producto.getPrecio()));
-        //holder.txtTotal.setText(String.valueOf(producto.getTotal()));
+        Producto producto = objects.get(position);
+        holder.lblProducto.setText(producto.getNombre());
+        holder.txtCantidad.setText(String.valueOf(producto.getCantidad()));
+        holder.btnEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                objects.remove(producto);
+                notifyItemRemoved(holder.getAdapterPosition());
+            }
+        });
+
+        holder.txtCantidad.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int cantidad;
+
+                try {
+                    cantidad = Integer.parseInt(s.toString());
+                } catch (NumberFormatException ex) {
+                    cantidad = 0;
+                }
+                producto.setCantidad(cantidad);
+                producto.updateTotal();
+            }
+        });
     }
 
     @Override
