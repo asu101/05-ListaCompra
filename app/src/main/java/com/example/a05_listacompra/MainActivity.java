@@ -74,16 +74,21 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(android.text.Editable s) {
-                String nombre = txtNombre.getText().toString();
-                String cantidad = txtCantidad.getText().toString();
-                String precio = txtPrecio.getText().toString();
+                try {
+                    String nombre = txtNombre.getText().toString();
+                    String cantidad = txtCantidad.getText().toString();
+                    String precio = txtPrecio.getText().toString();
 
-                if (nombre.isEmpty() || cantidad.isEmpty() || precio.isEmpty()) {
-                    lblTotal.setText("0.0");
-                } else {
-                    float total = Integer.parseInt(cantidad) * Float.parseFloat(precio);
-                    lblTotal.setText(String.valueOf(total));
+                    if (nombre.isEmpty() || cantidad.isEmpty() || precio.isEmpty()) {
+                        lblTotal.setText("0.0");
+                    } else {
+                        float total = Integer.parseInt(cantidad) * Float.parseFloat(precio);
+                        lblTotal.setText(String.valueOf(total));
+                    }
+                }catch (NumberFormatException ex) {
+
                 }
+
             }
         };
 
