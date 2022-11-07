@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         productos = new ArrayList<>();
 
         adapter = new ProductosAdapter(productos, R.layout.producto_view_holder, this);
-        layoutManager = new GridLayoutManager(this, 1);
+        layoutManager = new GridLayoutManager(this, columnas);
         binding.contentMain.Contenedor.setAdapter(adapter);
         binding.contentMain.Contenedor.setLayoutManager(layoutManager);
 
