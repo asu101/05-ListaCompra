@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:ems="10"
-        android:hint="Nombre producto"
+        android:hint="@string/nombre_producto"
         android:inputType="textPersonName" />
 
     <EditText
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:ems="10"
-        android:hint="Cantidad Producto"
+        android:hint="@string/cantidad_producto"
         android:inputType="number" />
 
     <EditText
@@ -28,12 +28,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:ems="10"
-        android:hint="Precio producto"
+        android:hint="@string/precio_producto"
         android:inputType="numberDecimal" />
 
     <TextView
         android:id="@+id/lblTotalProductoAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:textAlignment="center"
+        android:textStyle="bold" />
 </LinearLayout>

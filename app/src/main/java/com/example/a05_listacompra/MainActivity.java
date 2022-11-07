@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     private AlertDialog createProducto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Nuevo producto");
+        builder.setTitle(getString(R.string.create_title));
         builder.setCancelable(false);
 
         // Necesitamos un conenido
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         txtCantidad.addTextChangedListener(textWatcher);
         txtPrecio.addTextChangedListener(textWatcher);
 
-        builder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getResources().getString(R.string.btn_positive_create), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (!txtNombre.getText().toString().isEmpty() && !txtCantidad.getText().toString().isEmpty() && !txtPrecio.getText().toString().isEmpty()) {
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 }
             }
         });
-        builder.setNegativeButton("Cancelar", null);
+        builder.setNegativeButton(getResources().getString(R.string.btn_negative), null);
 
 
         return builder.create();
