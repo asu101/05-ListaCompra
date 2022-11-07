@@ -1,6 +1,9 @@
 package com.example.a05_listacompra.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -43,11 +46,12 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
         Producto producto = objects.get(position);
         holder.lblProducto.setText(producto.getNombre());
         holder.txtCantidad.setText(String.valueOf(producto.getCantidad()));
+
         holder.btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                objects.remove(producto);
-                notifyItemRemoved(holder.getAdapterPosition());
+
+                confirmDelete(producto, holder.getAdapterPosition()).show();
             }
         });
 
@@ -73,6 +77,31 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
                 producto.updateTotal();
             }
         });
+    }
+
+    private AlertDialog confirmDelete(Producto producto, int adapterPosition) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Confirmar eliminación");
+        builder.setCancelable(false);
+        TextView mensaje = new TextView(context);
+        mensaje.setText("¿Está seguro de eliminar el producto " + producto.getNombre() + "?");
+        mensaje.setTextSize(24);
+        mensaje.setTextColor(Color.RED);
+        mensaje.setPadding(100,100,100,100);
+        builder.setView(mensaje);
+
+        builder.setNegativeButton("CANCELAR", null);
+        builder.setPositiveButton("ELIMINAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                objects.remove(producto);
+                notifyItemRemoved(adapterPosition);
+            }
+        });
+
+
+
+        return builder.create();
     }
 
     @Override
