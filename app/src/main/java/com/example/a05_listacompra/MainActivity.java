@@ -2,6 +2,7 @@ package com.example.a05_listacompra;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.example.a05_listacompra.adapters.ProductosAdapter;
@@ -46,6 +47,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+
+        // Orientación del Movil
+        // getResources().getConfiguration().orientation
+        // PORTRAIT -> Vertical
+        // LANDSCAPE -> Horizontal
+
+        int columnas;
+
+        columnas = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 1 : 2;
 
         productos = new ArrayList<>();
 
